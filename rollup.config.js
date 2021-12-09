@@ -6,11 +6,11 @@ import commonjs from '@rollup/plugin-commonjs'
 import preprocess from 'svelte-preprocess'
 import postcss from 'rollup-plugin-postcss'
 import { babel } from '@rollup/plugin-babel'
-import htmlTemplate from 'rollup-plugin-generate-html-template'
 import del from 'rollup-plugin-delete'
 
 const production = !process.env.ROLLUP_WATCH
 
+// Warning: do not change code in this file while running "rollup -c -w", it will deprecate serve to other port, no fix found
 function serve() {
 	let isRunning = false
 	return {
@@ -42,8 +42,8 @@ export default {
 	},
 	plugins: [
 		del({
-			targets: path.resolve(__dirname, './public/*'),
-			runOnce: true
+			targets: path.resolve(__dirname, './public/build/*'),
+			runOnce: true,
 		}),
 		svelte({
 			compilerOptions: {
@@ -66,16 +66,9 @@ export default {
 			exclude: 'node_modules/**',
 			babelHelpers: 'bundled',
 			extensions: ['.js', '.mjs', '.html', '.svelte'],
-			presets: ['@babel/preset-env']
-		}),
-		htmlTemplate({
-			template: path.resolve(__dirname, './src/template.html'),
-			target: path.resolve(__dirname, './public/index.html')
+			presets: ['@babel/preset-env'],
 		}),
 		!production && livereload(path.resolve(__dirname, './public')),
 		!production && serve(),
 	],
 }
-
-// Warning: do not change code in this file while running "rollup -c -w", it will deprecate serve to other port, no fix found
-

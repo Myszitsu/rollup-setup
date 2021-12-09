@@ -23,4 +23,4 @@
 </style>
 
     <h1>Hello <span class="name">{name}</span>!</h1>
-    <h2>Hello <span class="name-two">{name2}!</span></h2>
+    <h2>Hi <span class="name-two">{name2}!</span></h2>
