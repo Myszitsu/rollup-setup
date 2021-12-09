@@ -6,6 +6,8 @@ import commonjs from '@rollup/plugin-commonjs'
 import preprocess from 'svelte-preprocess'
 import postcss from 'rollup-plugin-postcss'
 import { babel } from '@rollup/plugin-babel'
+import htmlTemplate from 'rollup-plugin-generate-html-template'
+import del from 'rollup-plugin-delete'
 
 const production = !process.env.ROLLUP_WATCH
 
@@ -39,6 +41,10 @@ export default {
 		clearScreen: false,
 	},
 	plugins: [
+		del({
+			targets: path.resolve(__dirname, './public/*'),
+			runOnce: true
+		}),
 		svelte({
 			compilerOptions: {
 				dev: !production,
@@ -61,6 +67,10 @@ export default {
 			babelHelpers: 'bundled',
 			extensions: ['.js', '.mjs', '.html', '.svelte'],
 			presets: ['@babel/preset-env']
+		}),
+		htmlTemplate({
+			template: path.resolve(__dirname, './src/template.html'),
+			target: path.resolve(__dirname, './public/index.html')
 		}),
 		!production && livereload(path.resolve(__dirname, './public')),
 		!production && serve(),

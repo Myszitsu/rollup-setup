@@ -1,5 +1,3 @@
-
-(function(l, r) { if (!l || l.getElementById('livereloadscript')) return; r = l.createElement('script'); r.async = 1; r.src = '//' + (self.location.host || 'localhost').split(':')[0] + ':35729/livereload.js?snipver=1'; r.id = 'livereloadscript'; l.getElementsByTagName('head')[0].appendChild(r) })(self.document);
 var app = (function () {
   'use strict';
 
@@ -7,22 +5,6 @@ var app = (function () {
     if (!(instance instanceof Constructor)) {
       throw new TypeError("Cannot call a class as a function");
     }
-  }
-
-  function _defineProperties(target, props) {
-    for (var i = 0; i < props.length; i++) {
-      var descriptor = props[i];
-      descriptor.enumerable = descriptor.enumerable || false;
-      descriptor.configurable = true;
-      if ("value" in descriptor) descriptor.writable = true;
-      Object.defineProperty(target, descriptor.key, descriptor);
-    }
-  }
-
-  function _createClass(Constructor, protoProps, staticProps) {
-    if (protoProps) _defineProperties(Constructor.prototype, protoProps);
-    if (staticProps) _defineProperties(Constructor, staticProps);
-    return Constructor;
   }
 
   function _inherits(subClass, superClass) {
@@ -166,11 +148,6 @@ var app = (function () {
   }
 
   function noop() { }
-  function add_location(element, file, line, column, char) {
-      element.__svelte_meta = {
-          loc: { file, line, column, char }
-      };
-  }
   function run(fn) {
       return fn();
   }
@@ -216,10 +193,10 @@ var app = (function () {
   function children(element) {
       return Array.from(element.childNodes);
   }
-  function custom_event(type, detail, bubbles = false) {
-      const e = document.createEvent('CustomEvent');
-      e.initCustomEvent(type, bubbles, false, detail);
-      return e;
+  function set_data(text, data) {
+      data = '' + data;
+      if (text.wholeText !== data)
+          text.data = data;
   }
 
   let current_component;
@@ -423,64 +400,6 @@ var app = (function () {
       }
   }
 
-  function dispatch_dev(type, detail) {
-      document.dispatchEvent(custom_event(type, Object.assign({ version: '3.44.2' }, detail), true));
-  }
-  function append_dev(target, node) {
-      dispatch_dev('SvelteDOMInsert', { target, node });
-      append(target, node);
-  }
-  function insert_dev(target, node, anchor) {
-      dispatch_dev('SvelteDOMInsert', { target, node, anchor });
-      insert(target, node, anchor);
-  }
-  function detach_dev(node) {
-      dispatch_dev('SvelteDOMRemove', { node });
-      detach(node);
-  }
-  function attr_dev(node, attribute, value) {
-      attr(node, attribute, value);
-      if (value == null)
-          dispatch_dev('SvelteDOMRemoveAttribute', { node, attribute });
-      else
-          dispatch_dev('SvelteDOMSetAttribute', { node, attribute, value });
-  }
-  function set_data_dev(text, data) {
-      data = '' + data;
-      if (text.wholeText === data)
-          return;
-      dispatch_dev('SvelteDOMSetData', { node: text, data });
-      text.data = data;
-  }
-  function validate_slots(name, slot, keys) {
-      for (const slot_key of Object.keys(slot)) {
-          if (!~keys.indexOf(slot_key)) {
-              console.warn(`<${name}> received an unexpected slot "${slot_key}".`);
-          }
-      }
-  }
-  /**
-   * Base class for Svelte components with some minor dev-enhancements. Used when dev=true.
-   */
-  class SvelteComponentDev extends SvelteComponent {
-      constructor(options) {
-          if (!options || (!options.target && !options.$$inline)) {
-              throw new Error("'target' is a required option");
-          }
-          super();
-      }
-      $destroy() {
-          super.$destroy();
-          this.$destroy = () => {
-              console.warn('Component was already destroyed'); // eslint-disable-line no-console
-          };
-      }
-      $capture_state() { }
-      $inject_state() { }
-  }
-
-  var file = "src\\App.svelte";
-
   function create_fragment(ctx) {
     var h1;
     var t0;
@@ -493,8 +412,8 @@ var app = (function () {
     var span1;
     var t5;
     var t6;
-    var block = {
-      c: function create() {
+    return {
+      c: function c() {
         h1 = element("h1");
         t0 = text("Hello ");
         span0 = element("span");
@@ -510,100 +429,61 @@ var app = (function () {
         /*name2*/
         ctx[1]);
         t6 = text("!");
-        attr_dev(span0, "class", "name svelte-tsmlja");
-        add_location(span0, file, 21, 14, 315);
-        add_location(h1, file, 21, 4, 305);
-        attr_dev(span1, "class", "name-two svelte-tsmlja");
-        add_location(span1, file, 22, 14, 369);
-        add_location(h2, file, 22, 4, 359);
+        attr(span0, "class", "name svelte-tsmlja");
+        attr(span1, "class", "name-two svelte-tsmlja");
       },
-      l: function claim(nodes) {
-        throw new Error("options.hydrate only works if the component was compiled with the `hydratable: true` option");
+      m: function m(target, anchor) {
+        insert(target, h1, anchor);
+        append(h1, t0);
+        append(h1, span0);
+        append(span0, t1);
+        append(h1, t2);
+        insert(target, t3, anchor);
+        insert(target, h2, anchor);
+        append(h2, t4);
+        append(h2, span1);
+        append(span1, t5);
+        append(span1, t6);
       },
-      m: function mount(target, anchor) {
-        insert_dev(target, h1, anchor);
-        append_dev(h1, t0);
-        append_dev(h1, span0);
-        append_dev(span0, t1);
-        append_dev(h1, t2);
-        insert_dev(target, t3, anchor);
-        insert_dev(target, h2, anchor);
-        append_dev(h2, t4);
-        append_dev(h2, span1);
-        append_dev(span1, t5);
-        append_dev(span1, t6);
-      },
-      p: function update(ctx, _ref) {
+      p: function p(ctx, _ref) {
         var _ref2 = _slicedToArray(_ref, 1),
             dirty = _ref2[0];
 
         if (dirty &
         /*name*/
-        1) set_data_dev(t1,
+        1) set_data(t1,
         /*name*/
         ctx[0]);
         if (dirty &
         /*name2*/
-        2) set_data_dev(t5,
+        2) set_data(t5,
         /*name2*/
         ctx[1]);
       },
       i: noop,
       o: noop,
-      d: function destroy(detaching) {
-        if (detaching) detach_dev(h1);
-        if (detaching) detach_dev(t3);
-        if (detaching) detach_dev(h2);
+      d: function d(detaching) {
+        if (detaching) detach(h1);
+        if (detaching) detach(t3);
+        if (detaching) detach(h2);
       }
     };
-    dispatch_dev("SvelteRegisterBlock", {
-      block: block,
-      id: create_fragment.name,
-      type: "component",
-      source: "",
-      ctx: ctx
-    });
-    return block;
   }
 
   function instance($$self, $$props, $$invalidate) {
-    var _$$props$$$slots = $$props.$$slots,
-        slots = _$$props$$$slots === void 0 ? {} : _$$props$$$slots;
-        $$props.$$scope;
-    validate_slots('App', slots, []);
     var name = $$props.name;
     var name2 = $$props.name2;
-    var writable_props = ['name', 'name2'];
-    Object.keys($$props).forEach(function (key) {
-      if (!~writable_props.indexOf(key) && key.slice(0, 2) !== '$$' && key !== 'slot') console.warn("<App> was created with unknown prop '".concat(key, "'"));
-    });
 
     $$self.$$set = function ($$props) {
       if ('name' in $$props) $$invalidate(0, name = $$props.name);
       if ('name2' in $$props) $$invalidate(1, name2 = $$props.name2);
     };
 
-    $$self.$capture_state = function () {
-      return {
-        name: name,
-        name2: name2
-      };
-    };
-
-    $$self.$inject_state = function ($$props) {
-      if ('name' in $$props) $$invalidate(0, name = $$props.name);
-      if ('name2' in $$props) $$invalidate(1, name2 = $$props.name2);
-    };
-
-    if ($$props && "$$inject" in $$props) {
-      $$self.$inject_state($$props.$$inject);
-    }
-
     return [name, name2];
   }
 
-  var App = /*#__PURE__*/function (_SvelteComponentDev) {
-    _inherits(App, _SvelteComponentDev);
+  var App = /*#__PURE__*/function (_SvelteComponent) {
+    _inherits(App, _SvelteComponent);
 
     var _super = _createSuper(App);
 
@@ -612,55 +492,16 @@ var app = (function () {
 
       _classCallCheck(this, App);
 
-      _this = _super.call(this, options);
+      _this = _super.call(this);
       init(_assertThisInitialized(_this), options, instance, create_fragment, safe_not_equal, {
         name: 0,
         name2: 1
       });
-      dispatch_dev("SvelteRegisterComponent", {
-        component: _assertThisInitialized(_this),
-        tagName: "App",
-        options: options,
-        id: create_fragment.name
-      });
-      var ctx = _this.$$.ctx;
-      var props = options.props || {};
-
-      if (
-      /*name*/
-      ctx[0] === undefined && !('name' in props)) {
-        console.warn("<App> was created without expected prop 'name'");
-      }
-
-      if (
-      /*name2*/
-      ctx[1] === undefined && !('name2' in props)) {
-        console.warn("<App> was created without expected prop 'name2'");
-      }
-
       return _this;
     }
 
-    _createClass(App, [{
-      key: "name",
-      get: function get() {
-        throw new Error("<App>: Props cannot be read directly from the component instance unless compiling with 'accessors: true' or '<svelte:options accessors/>'");
-      },
-      set: function set(value) {
-        throw new Error("<App>: Props cannot be set directly on the component instance unless compiling with 'accessors: true' or '<svelte:options accessors/>'");
-      }
-    }, {
-      key: "name2",
-      get: function get() {
-        throw new Error("<App>: Props cannot be read directly from the component instance unless compiling with 'accessors: true' or '<svelte:options accessors/>'");
-      },
-      set: function set(value) {
-        throw new Error("<App>: Props cannot be set directly on the component instance unless compiling with 'accessors: true' or '<svelte:options accessors/>'");
-      }
-    }]);
-
     return App;
-  }(SvelteComponentDev);
+  }(SvelteComponent);
 
   var app = new App({
     target: document.body,
